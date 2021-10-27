@@ -110,6 +110,57 @@ namespace GildedRose.Tests {
 
         }
 
+        [Fact]
+        public void TestConjuredQualityBeforeSellIn0() {
+            var defaultItems = Program.insertDefaultItems();
+            var expected = defaultItems.Where(e => e.Name == "Conjured Mana Cake").First().Quality;
+            Program.UpdateQuality(defaultItems);
+            var actual = defaultItems.Where(e => e.Name == "Conjured Mana Cake").First().Quality;
+
+            Assert.Equal(expected - 2, actual);
+        }
+
+        [Fact]
+        public void TestConjuredQualitySellIn0() {
+            var defaultItems = Program.insertDefaultItems();
+            defaultItems.Add(new Item() { Name = "Conjured Rotten Cake", SellIn = 0, Quality = 6 });
+            var expected = defaultItems.Where(e => e.Name == "Conjured Rotten Cake").First().Quality;
+            Program.UpdateQuality(defaultItems);
+            var actual = defaultItems.Where(e => e.Name == "Conjured Rotten Cake").First().Quality;
+
+            Assert.Equal(expected - 4, actual);
+        }
+
+        [Fact]
+        public void TestConjuredQualityNotNegative() {
+            var defaultItems = Program.insertDefaultItems();
+            defaultItems.Add(new Item() { Name = "Conjured Milk Cake", SellIn = 0, Quality = 3 });
+            Program.UpdateQuality(defaultItems);
+            var actual = defaultItems.Where(e => e.Name == "Conjured Milk Cake").First().Quality;
+
+            Assert.Equal(0, actual);
+        }
+
+        [Fact]
+        public void TestDefaultQualityNotNegative() {
+            var defaultItems = Program.insertDefaultItems();
+            defaultItems.Add(new Item() { Name = "+6 Dexterity Vest", SellIn = 0, Quality = 0 });
+            Program.UpdateQuality(defaultItems);
+            var actual = defaultItems.Where(e => e.Name == "+6 Dexterity Vest").First().Quality;
+
+            Assert.Equal(0, actual);
+        }
+
+        [Fact]
+        public void TestQualityOfConcertThing() {
+            var defaultItems = Program.insertDefaultItems();
+            defaultItems.Add(new Item() { Name = "Backstage passes to a TAFKAL80ETC concert", SellIn = 1, Quality = 2 });
+            Program.UpdateQuality(defaultItems);
+            var actual = defaultItems.Where(e => e.Name == "Backstage passes to a TAFKAL80ETC concert").Last().Quality;
+
+            Assert.Equal(0, actual);
+        }
+
 
     }
 }

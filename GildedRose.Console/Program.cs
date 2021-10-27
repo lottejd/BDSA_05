@@ -15,17 +15,16 @@ namespace GildedRose.Console {
         public static void UpdateQuality(IList<Item> items) {
             foreach (Item item in items) {
 
+                item.SellIn--; // A day goes by.
                 switch (item.Name) {
-
                     case "Aged Brie":
                         if (item.Quality <= 49) {
                             item.Quality++;
                         }
-                        item.SellIn--;
                         break;
                     case "Backstage passes to a TAFKAL80ETC concert":
                         switch (item.SellIn) {
-                            case 0: item.Quality = 0; break;
+                            case <= 0: item.Quality = 0; break;
                             case < 6: item.Quality += 3; break;
                             case < 11: item.Quality += 2; break;
                             default: item.Quality += 1; break;
@@ -36,8 +35,16 @@ namespace GildedRose.Console {
                         break;
                     case "Sulfuras, Hand of Ragnaros":
                         break;
+                    case string a when a.Contains("Conjured"):
+                        switch (item.SellIn) {
+                            case < 0: item.Quality -= 4; break;
+                            case > 0: item.Quality -= 2; break;
+                        }
+                        switch (item.Quality) {
+                            case < 0: item.Quality = 0; break;
+                        }
+                        break;
                     default:
-                        item.SellIn--;
                         if (item.SellIn <= 0) {
                             item.Quality -= 2;
                         } else {
@@ -48,7 +55,6 @@ namespace GildedRose.Console {
                             item.Quality = 0;
                         }
                         break;
-
                 }
             }
         }
