@@ -14,9 +14,9 @@ namespace GildedRose.Tests {
         [Fact]
         public void TestAgedBrie() {
             var defaultItems = Program.insertDefaultItems();
-            var brieQuality = defaultItems.Where(e => e.Name == "Aged Brie").First().Quality;
+            var brieQuality = defaultItems.First(e => e.Name == "Aged Brie").Quality;
             Program.UpdateQuality(defaultItems);
-            var actual = defaultItems.Where(e => e.Name == "Aged Brie").First().Quality;
+            var actual = defaultItems.First(e => e.Name == "Aged Brie").Quality;
 
 
             Assert.Equal(brieQuality + 1, actual);
